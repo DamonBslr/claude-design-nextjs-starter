@@ -11,7 +11,8 @@
     "db:generate": "turbo db:generate",
     "db:migrate": "turbo db:migrate",
     "db:push": "turbo db:push",
-    "db:studio": "turbo db:studio"
+    "db:studio": "turbo db:studio",
+    "design:pending": "bash .claude/skills/claude-design-sync/scripts/pending_imports.sh"
   },
   "devDependencies": {
     "@workspace/eslint-config": "workspace:*",

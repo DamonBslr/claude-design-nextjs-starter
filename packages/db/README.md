@@ -13,13 +13,17 @@ Neon Postgres via [Drizzle ORM](https://orm.drizzle.team/) using the [Neon serve
 
 ## Schema and migrations
 
-1. Define tables under `src/schema/` and re-export from `src/schema/index.ts`.
-2. From the repo root:
+The Better Auth tables are defined in `src/schema/auth.ts`. Define other app
+tables under `src/schema/` and re-export them from `src/schema/index.ts`.
 
-   ```bash
-   bun run db:generate   # SQL in packages/db/drizzle/
-   bun run db:migrate    # apply to Neon
-   ```
+From the repo root:
+
+```bash
+bun run db:generate   # SQL in packages/db/drizzle/
+bun run db:migrate    # apply to Neon
+```
+
+Run both commands after cloning before using sign-in or sign-up.
 
 Other commands (run from root via Turbo, or in `packages/db`):
 
@@ -31,8 +35,8 @@ Other commands (run from root via Turbo, or in `packages/db`):
 Server Components and Server Actions only:
 
 ```ts
-import { db } from "@workspace/db/client";
-import * as schema from "@workspace/db/schema";
+import { db } from "@workspace/db/client"
+import * as schema from "@workspace/db/schema"
 ```
 
 Do not import `@workspace/db/client` from Client Components.

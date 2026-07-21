@@ -1,6 +1,5 @@
-import { buildSignInUrl } from "@sezaba/auth/urls"
 import { LogIn } from "lucide-react"
-import { headers } from "next/headers"
+import Link from "next/link"
 
 import {
   SidebarMenu,
@@ -10,15 +9,6 @@ import {
 
 import { getCachedSession } from "@/lib/session"
 import { SidebarUserMenu } from "@/components/sidebar-user-menu"
-
-async function getSignInCallbackUrl(): Promise<string> {
-  const h = await headers()
-  const host = h.get("x-forwarded-host") ?? h.get("host") ?? "localhost:3000"
-  const proto =
-    h.get("x-forwarded-proto") ??
-    (host.startsWith("localhost") ? "http" : "https")
-  return `${proto}://${host}/`
-}
 
 /**
  * Server Component: resolves the session on the server and renders the final
@@ -30,13 +20,11 @@ export async function SidebarUser() {
   const session = await getCachedSession()
 
   if (!session?.user) {
-    const signInUrl = buildSignInUrl(await getSignInCallbackUrl())
-
     return (
       <SidebarMenu>
         <SidebarMenuItem>
           <SidebarMenuButton size="lg" asChild tooltip="Sign in">
-            <a href={signInUrl}>
+            <Link href="/sign-in?callbackURL=/">
               <div className="flex aspect-square size-8 shrink-0 items-center justify-center rounded-lg border border-sidebar-border bg-sidebar text-sidebar-foreground">
                 <LogIn className="size-4" />
               </div>
@@ -46,7 +34,7 @@ export async function SidebarUser() {
                   to your account
                 </span>
               </div>
-            </a>
+            </Link>
           </SidebarMenuButton>
         </SidebarMenuItem>
       </SidebarMenu>

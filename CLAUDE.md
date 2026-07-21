@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Critical: Next.js version
 
-This repo runs **Next.js 16** with breaking changes from earlier versions you may know (e.g. Middleware is renamed to **Proxy** — `proxy.ts` with a `proxy` function, not `middleware.ts`). Before writing Next.js code, read the relevant guide in `apps/web/node_modules/next/dist/docs/` and heed deprecation notices. Do not assume App Router conventions from training data carry over.
+This repo runs **Next.js 16** with breaking changes from earlier versions you may know (e.g. Middleware is renamed to **Proxy** — `proxy.ts` with a `proxy` function, not `middleware.ts`). Before writing Next.js code, read the relevant guide in the installed package's `next/dist/docs/` when present and heed deprecation notices. If the package omits those files, use the official docs matching the installed version. Do not assume App Router conventions from training data carry over.
 
 ## Commands
 
@@ -25,6 +25,7 @@ bun run db:generate  # generate SQL migrations into packages/db/drizzle/
 bun run db:migrate   # apply migrations to Neon
 bun run db:push      # push schema directly — dev only
 bun run db:studio    # Drizzle Studio
+bun run design:pending # list imported design versions not yet synced
 ```
 
 To run a single workspace task directly, `cd` into it and run its script (e.g. `cd apps/web && bun run dev`), or use `turbo dev --filter=web`.
@@ -41,23 +42,25 @@ There is no test runner configured in this repo.
 
 Turborepo monorepo (`apps/*`, `packages/*`). One app today (`apps/web`), with shared logic factored into workspace packages consumed via `workspace:*`.
 
-- **`apps/web`** — the Next.js 16 app. `next.config.ts` sets `turbopack.root` to the monorepo root and `transpilePackages` for `@workspace/ui` and `@sezaba/auth` (workspace packages ship raw `.ts`/`.tsx`, so consuming apps must transpile them).
+- **`apps/web`** — the Next.js 16 app. `next.config.ts` sets `turbopack.root` to the monorepo root and transpiles the raw TypeScript from `@workspace/ui`.
 - **`packages/ui`** (`@workspace/ui`) — shared shadcn/ui component library. Exports `./components/*`, `./hooks/*`, `./lib/*`, and `./globals.css`. **All UI primitives live here** — compose app UI from these, do not write one-off primitives in the app.
-- **`packages/auth`** (`@sezaba/auth`) — Better Auth client wrapper (details below).
 - **`packages/db`** (`@workspace/db`) — Neon Postgres + Drizzle ORM.
 - **`packages/eslint-config`**, **`packages/typescript-config`** — shared config consumed by every workspace's local `eslint.config.js` / `tsconfig.json`.
 
-### Authentication (`@sezaba/auth`)
+### Authentication (local Better Auth)
 
-Apps do **not** run their own auth server. They authenticate against a central Better Auth server at `auth.sezaba.de`, which sets a session cookie scoped to `.sezaba.de` (cross-subdomain). New consumer apps need their origin added to the auth server's `TRUSTED_ORIGINS` and must share its `BETTER_AUTH_SECRET`.
+`apps/web` owns its Better Auth server in `lib/auth.ts` and exposes it through
+`app/api/auth/[...all]/route.ts`. Users, accounts, sessions, and verifications
+live in the same Neon/Drizzle database as the app. No global auth server,
+shared secret, trusted-origin registration, or cross-subdomain cookie is used.
 
-Two-layer auth pattern — both are required:
-1. **Proxy** (`apps/web/proxy.ts`) — `createAuthProxy` does an *optimistic, network-free* cookie-presence check and redirects to the central sign-in page if absent. This is **not secure on its own** (cookies can be forged) and only gates routing. Scope it with the `matcher` config.
-2. **Real validation** in pages/route handlers via `getSession()` from `@sezaba/auth/server`, which actually calls the auth server. In Server Components call it with no args (cookies read from `next/headers`); in Route Handlers pass `request.headers`.
+Two-layer auth pattern:
 
-In `apps/web`, use `getCachedSession` from [apps/web/lib/session.ts](apps/web/lib/session.ts) — a React `cache()`-wrapped `getSession` so multiple Suspense boundaries (sidebar, header) share one fetch per request.
+1. **Proxy** (`apps/web/proxy.ts`) performs an optimistic cookie-presence check and redirects to the local `/sign-in` page. It does not perform authorization.
+2. **Secure validation** uses `getCachedSession` from `apps/web/lib/session.ts`, which calls `auth.api.getSession` against the database and is memoized per render pass.
 
-Client side: import `signIn`/`signOut`/`useSession` from `@sezaba/auth/client`. Env vars: `NEXT_PUBLIC_AUTH_URL` (client), `AUTH_URL` (server, takes precedence). See [packages/auth/README.md](packages/auth/README.md).
+Client components import `authClient` from `apps/web/lib/auth-client.ts`. Required
+env vars are `BETTER_AUTH_URL`, `BETTER_AUTH_SECRET`, and `DATABASE_URL`.
 
 ### Database (`@workspace/db`)
 
@@ -69,6 +72,24 @@ import * as schema from "@workspace/db/schema"
 ```
 
 Define tables under `packages/db/src/schema/` and re-export from `src/schema/index.ts`. Generated migrations land in `packages/db/drizzle/`. `DATABASE_URL` lives in `apps/web/.env.local`.
+
+### Claude Design import and sync
+
+The design workflow is deliberately split from backend implementation:
+
+1. `/import-design <source>` normalizes a Claude Design handoff into committed
+   `design-src/`. No other workflow writes that directory.
+2. `/init-from-design <source>` performs the first Next.js transformation with
+   `claude-design-to-nextjs`.
+3. `/sync-design [source] [--to <commit>]` applies later design deltas after a
+   review gate. Run `bun run design:pending` to inspect the queue.
+4. `/wire-backend [feature]` specs and implements approved server work with
+   Neon/Drizzle and Better Auth.
+
+Design-owned screens live in `packages/ui/src/screens/`. App Router files in
+`apps/web/app/` stay thin and own composition. Server-only feature modules and
+temporary typed TODO adapters live in `apps/web/lib/features/`. Design sync never
+implements persistence, edits migrations, changes auth policy, or writes secrets.
 
 ## Sezaba CI styling (enforced)
 
@@ -83,6 +104,5 @@ Palette: `brand-black`, `brand-white`, `brand-beige`, `brand-pink`, `brand-red` 
 ## Conventions
 
 - **Formatting** (`.prettierrc`): no semicolons, double quotes, 2-space tabs, 80-col, `es5` trailing commas. `prettier-plugin-tailwindcss` sorts classes; `cn` and `cva` are registered as class-bearing functions.
-- Note `packages/auth/` uses **biome** (tabs, `biome.json`) rather than the repo prettier config.
 - Path alias in `apps/web`: `@/*` → app root. shadcn aliases (`components.json`): `ui` → `@workspace/ui/components`, `utils` → `@workspace/ui/lib/utils`.
 - Use `cn()` from `@workspace/ui/lib/utils` for conditional classes.

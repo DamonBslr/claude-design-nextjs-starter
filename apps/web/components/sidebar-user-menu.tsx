@@ -2,9 +2,16 @@
 
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { signOut } from "@sezaba/auth/client"
-import type { User } from "@sezaba/auth/types"
-import { BadgeCheck, Bell, ChevronsUpDown, CreditCard, LogOut } from "lucide-react"
+import {
+  BadgeCheck,
+  Bell,
+  ChevronsUpDown,
+  CreditCard,
+  LogOut,
+} from "lucide-react"
+
+import type { AuthUser } from "@/lib/auth"
+import { authClient } from "@/lib/auth-client"
 
 import { Avatar, AvatarFallback } from "@workspace/ui/components/avatar"
 import {
@@ -34,7 +41,7 @@ function userInitials(name: string, email: string) {
   return source.slice(0, 2).toUpperCase()
 }
 
-export function SidebarUserMenu({ user }: { user: User }) {
+export function SidebarUserMenu({ user }: { user: AuthUser }) {
   const { isMobile } = useSidebar()
   const router = useRouter()
 
@@ -42,7 +49,8 @@ export function SidebarUserMenu({ user }: { user: User }) {
   const initials = userInitials(user.name, user.email)
 
   async function handleSignOut() {
-    await signOut()
+    await authClient.signOut()
+    router.push("/sign-in")
     router.refresh()
   }
 

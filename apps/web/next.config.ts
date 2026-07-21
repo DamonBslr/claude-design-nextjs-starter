@@ -4,11 +4,11 @@ import type { NextConfig } from "next"
 
 const monorepoRoot = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
-  "../..",
+  "../.."
 )
 
 const nextConfig: NextConfig = {
-  transpilePackages: ["@workspace/ui", "@sezaba/auth"],
+  transpilePackages: ["@workspace/ui"],
   turbopack: {
     root: monorepoRoot,
   },
