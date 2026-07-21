@@ -1,0 +1,67 @@
+---
+description: Sezaba CI colors and Tailwind styling rules for all UI work
+globs: "**/*.{tsx,css}"
+alwaysApply: true
+---
+
+# Sezaba CI styling
+
+This monorepo uses a **fixed 6-color palette**. All UI must use these tokens — never introduce arbitrary hex values or default Tailwind palette colors (`blue-500`, `zinc-200`, `slate-900`, etc.).
+
+## Palette
+
+| Token | Hex | Role |
+|-------|-----|------|
+| `brand-black` | `#000000` | Text, default buttons (light mode) |
+| `brand-white` | `#FFFFFF` | Primary light background |
+| `brand-beige` | `#F3F3EB` | Secondary light background, muted surfaces |
+| `brand-pink` | `#FEC6E9` | Light background accent, chart/data accent |
+| `brand-red` | `#D20001` | **Default** accent (CTAs, highlights, charts, destructive) |
+| `brand-blue` | `#0212EE` | Secondary accent (charts, data viz) |
+
+## Semantic tokens (prefer these)
+
+Use shadcn semantic classes so components stay theme-aware:
+
+- **Page**: `bg-background text-foreground`
+- **Default button**: `bg-primary text-primary-foreground` (black on light, white on dark)
+- **Secondary surfaces**: `bg-secondary`, `bg-muted`
+- **Highlight panels**: `bg-accent text-accent-foreground` (pink)
+- **Errors / destructive**: `bg-destructive`, `text-destructive`, `border-destructive`
+- **Charts**: `chart-1` (red) → `chart-5` (beige) — see `STYLEGUIDE.md`
+
+Direct brand utilities when semantics do not fit: `bg-brand-red`, `text-brand-blue`, `border-brand-black`, etc.
+
+## Backgrounds
+
+Light backgrounds only from: `brand-white`, `brand-beige`, `brand-pink` (or semantic `background`, `secondary`, `muted`, `accent`).
+
+## Accents
+
+- Default accent color is **red** (`brand-red` / `destructive` / `chart-1`).
+- Blue and pink are for **additional** series, badges, or decorative blocks — not the primary CTA unless specified.
+- Do not use blue as the default button or link color.
+
+## Dark mode
+
+Dark mode inverts black ↔ white via CSS variables. Accents (red, blue, pink, beige) stay the same. Use semantic tokens; do not hardcode `#000` / `#fff` in components.
+
+## Borders, hover, disabled
+
+Opacity on black/white is allowed via semantic tokens:
+
+- `border-border`, `ring-ring`, `text-muted-foreground`
+- `bg-primary/80`, `hover:bg-muted`, `opacity-50` for disabled states
+
+Do not invent new gray scales.
+
+## Forbidden
+
+- Raw hex in TSX/CSS (`#0212EE`, `rgb(...)`)
+- Tailwind default color scales (`gray-*`, `blue-*`, `red-*` except `brand-*`)
+- New colors outside the six brand tokens without design approval
+
+## Reference
+
+Human docs: [STYLEGUIDE.md](../../STYLEGUIDE.md)  
+Theme source: [packages/ui/src/styles/globals.css](../../packages/ui/src/styles/globals.css)

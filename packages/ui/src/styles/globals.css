@@ -1,0 +1,172 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+@source "../../../apps/**/*.{ts,tsx}";
+@source "../../../components/**/*.{ts,tsx}";
+@source "../**/*.{ts,tsx}";
+
+:root {
+    /* Sezaba CI — base palette (do not add colors outside this set) */
+    --brand-black: #000000;
+    --brand-blue: #0212ee;
+    --brand-red: #d20001;
+    --brand-beige: #f3f3eb;
+    --brand-pink: #fec6e9;
+    --brand-white: #ffffff;
+
+    /* Semantic light theme */
+    --background: var(--brand-white);
+    --foreground: var(--brand-black);
+
+    --card: var(--brand-white);
+    --card-foreground: var(--brand-black);
+
+    --popover: var(--brand-white);
+    --popover-foreground: var(--brand-black);
+
+    --primary: var(--brand-black);
+    --primary-foreground: var(--brand-white);
+
+    --secondary: var(--brand-beige);
+    --secondary-foreground: var(--brand-black);
+
+    --muted: var(--brand-beige);
+    --muted-foreground: color-mix(in oklch, var(--brand-black) 55%, transparent);
+
+    --accent: var(--brand-pink);
+    --accent-foreground: var(--brand-black);
+
+    --destructive: var(--brand-red);
+    --destructive-foreground: var(--brand-white);
+
+    --border: color-mix(in oklch, var(--brand-black) 15%, transparent);
+    --input: color-mix(in oklch, var(--brand-black) 12%, transparent);
+    --ring: color-mix(in oklch, var(--brand-black) 25%, transparent);
+
+    --chart-1: var(--brand-red);
+    --chart-2: var(--brand-blue);
+    --chart-3: var(--brand-pink);
+    --chart-4: var(--brand-black);
+    --chart-5: var(--brand-beige);
+
+    --radius: 0.875rem;
+
+    --sidebar: var(--brand-beige);
+    --sidebar-foreground: var(--brand-black);
+    --sidebar-primary: var(--brand-black);
+    --sidebar-primary-foreground: var(--brand-white);
+    --sidebar-accent: var(--brand-pink);
+    --sidebar-accent-foreground: var(--brand-black);
+    --sidebar-border: color-mix(in oklch, var(--brand-black) 15%, transparent);
+    --sidebar-ring: color-mix(in oklch, var(--brand-black) 25%, transparent);
+}
+
+.dark {
+    /* Dark mode: invert black ↔ white; accents unchanged */
+    --background: var(--brand-black);
+    --foreground: var(--brand-white);
+
+    --card: var(--brand-black);
+    --card-foreground: var(--brand-white);
+
+    --popover: var(--brand-black);
+    --popover-foreground: var(--brand-white);
+
+    --primary: var(--brand-white);
+    --primary-foreground: var(--brand-black);
+
+    --secondary: color-mix(in oklch, var(--brand-white) 12%, var(--brand-black));
+    --secondary-foreground: var(--brand-white);
+
+    --muted: color-mix(in oklch, var(--brand-white) 12%, var(--brand-black));
+    --muted-foreground: color-mix(in oklch, var(--brand-white) 55%, transparent);
+
+    --accent: var(--brand-pink);
+    --accent-foreground: var(--brand-black);
+
+    --destructive: var(--brand-red);
+    --destructive-foreground: var(--brand-white);
+
+    --border: color-mix(in oklch, var(--brand-white) 15%, transparent);
+    --input: color-mix(in oklch, var(--brand-white) 15%, transparent);
+    --ring: color-mix(in oklch, var(--brand-white) 25%, transparent);
+
+    --chart-1: var(--brand-red);
+    --chart-2: var(--brand-blue);
+    --chart-3: var(--brand-pink);
+    --chart-4: var(--brand-white);
+    --chart-5: var(--brand-beige);
+
+    --sidebar: color-mix(in oklch, var(--brand-white) 8%, var(--brand-black));
+    --sidebar-foreground: var(--brand-white);
+    --sidebar-primary: var(--brand-white);
+    --sidebar-primary-foreground: var(--brand-black);
+    --sidebar-accent: var(--brand-pink);
+    --sidebar-accent-foreground: var(--brand-black);
+    --sidebar-border: color-mix(in oklch, var(--brand-white) 15%, transparent);
+    --sidebar-ring: color-mix(in oklch, var(--brand-white) 25%, transparent);
+}
+
+@theme inline {
+    --color-brand-black: var(--brand-black);
+    --color-brand-blue: var(--brand-blue);
+    --color-brand-red: var(--brand-red);
+    --color-brand-beige: var(--brand-beige);
+    --color-brand-pink: var(--brand-pink);
+    --color-brand-white: var(--brand-white);
+
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-destructive: var(--destructive);
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+    --color-chart-1: var(--chart-1);
+    --color-chart-2: var(--chart-2);
+    --color-chart-3: var(--chart-3);
+    --color-chart-4: var(--chart-4);
+    --color-chart-5: var(--chart-5);
+    --radius-sm: calc(var(--radius) * 0.6);
+    --radius-md: calc(var(--radius) * 0.8);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) * 1.4);
+    --radius-2xl: calc(var(--radius) * 1.8);
+    --radius-3xl: calc(var(--radius) * 2.2);
+    --radius-4xl: calc(var(--radius) * 2.6);
+    --color-sidebar: var(--sidebar);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-ring: var(--sidebar-ring);
+    --font-sans: var(--font-sans);
+    --font-heading: var(--font-heading);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+    }
+  body {
+    @apply bg-background text-foreground;
+    }
+  button:not(:disabled), [role="button"]:not(:disabled) {
+    cursor: pointer;
+    }
+}
