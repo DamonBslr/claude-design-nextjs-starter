@@ -16,13 +16,15 @@ export function AppShell({
 }) {
   return (
     <SidebarProvider className="flex h-svh w-full flex-col overflow-hidden">
-      <SiteHeader />
       <div className="flex min-h-0 w-full flex-1">
         <AppSidebar organizationSwitcher={sidebarOrganization}>
           {sidebarUser}
         </AppSidebar>
-        <SidebarInset className="min-h-0 overflow-auto overscroll-none">
-          {children}
+        <SidebarInset className="h-svh min-h-0 min-w-0 overflow-hidden">
+          <SiteHeader />
+          <div className="h-full min-w-0 overflow-auto overscroll-none bg-background md:mx-2 md:mb-2 md:rounded-xl md:shadow-sm">
+            {children}
+          </div>
         </SidebarInset>
       </div>
     </SidebarProvider>

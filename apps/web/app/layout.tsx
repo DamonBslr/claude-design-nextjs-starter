@@ -35,7 +35,7 @@ export default function RootLayout({
         instrumentSerifHeading.variable
       )}
     >
-      <body className="h-svh overflow-hidden overscroll-none">
+      <body className="overflow-hidden overscroll-none">
         <TooltipProvider>
           <ThemeProvider>{children}</ThemeProvider>
         </TooltipProvider>

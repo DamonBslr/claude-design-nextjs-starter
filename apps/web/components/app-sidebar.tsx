@@ -60,7 +60,7 @@ export function AppSidebar({
   const pathname = usePathname()
 
   return (
-    <Sidebar collapsible="icon" variant="inset" className="pt-14">
+    <Sidebar collapsible="icon" variant="inset">
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>

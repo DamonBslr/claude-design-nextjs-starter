@@ -22,8 +22,8 @@ export function SiteHeader() {
   const pathname = usePathname()
 
   return (
-    <header className="sticky top-0 z-50 flex h-14 w-full shrink-0 items-center gap-2 border-b bg-background px-4 lg:px-6">
-      <SidebarTrigger className="md:hidden" />
+    <header className="sticky top-0 z-10 flex w-full shrink-0 items-center gap-2 bg-sidebar px-3 pt-[max(0.5rem,env(safe-area-inset-top))] pb-2">
+      <SidebarTrigger className="border bg-background shadow-sm" />
       <nav className="hidden items-center gap-5 text-sm md:flex">
         {navItems.map((item) => {
           const isActive =
