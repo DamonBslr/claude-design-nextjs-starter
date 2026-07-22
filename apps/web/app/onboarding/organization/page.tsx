@@ -16,7 +16,7 @@ export default async function OrganizationOnboardingPage({
 }) {
   const params = await searchParams
   const callbackURL = safeCallbackURL(params.callbackURL)
-  await requireSession(
+  const session = await requireSession(
     `/onboarding/organization?callbackURL=${encodeURIComponent(callbackURL)}`
   )
   const context = await getCachedOrganizationContext()
@@ -27,5 +27,10 @@ export default async function OrganizationOnboardingPage({
     redirect(callbackURL)
   }
 
-  return <OrganizationSetupForm callbackURL={callbackURL} />
+  return (
+    <OrganizationSetupForm
+      callbackURL={callbackURL}
+      defaultName={`${session.user.name}'s Organization`}
+    />
+  )
 }

@@ -25,8 +25,10 @@ import {
 
 export function OrganizationSetupForm({
   callbackURL,
+  defaultName,
 }: {
   callbackURL: string
+  defaultName: string
 }) {
   const router = useRouter()
   const [state, action, pending] = useActionState(
@@ -59,6 +61,10 @@ export function OrganizationSetupForm({
               <Input
                 id="organization-name"
                 name="name"
+                defaultValue={defaultName.slice(
+                  0,
+                  ORGANIZATION_NAME_MAX_LENGTH
+                )}
                 maxLength={ORGANIZATION_NAME_MAX_LENGTH}
                 autoComplete="organization"
                 aria-invalid={Boolean(state.fieldErrors?.name)}
