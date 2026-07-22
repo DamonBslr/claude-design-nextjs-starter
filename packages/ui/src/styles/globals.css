@@ -65,22 +65,22 @@
 
 .dark {
     /* Dark mode: invert black ↔ white; accents unchanged */
-    --background: var(--brand-black);
+    --background: color-mix(in oklch, var(--brand-white) 10%, var(--brand-black));
     --foreground: var(--brand-white);
 
-    --card: var(--brand-black);
+    --card: color-mix(in oklch, var(--brand-white) 10%, var(--brand-black));
     --card-foreground: var(--brand-white);
 
-    --popover: var(--brand-black);
+    --popover: color-mix(in oklch, var(--brand-white) 10%, var(--brand-black));
     --popover-foreground: var(--brand-white);
 
     --primary: var(--brand-white);
     --primary-foreground: var(--brand-black);
 
-    --secondary: color-mix(in oklch, var(--brand-white) 12%, var(--brand-black));
+    --secondary: color-mix(in oklch, var(--brand-white) 20%, var(--brand-black));
     --secondary-foreground: var(--brand-white);
 
-    --muted: color-mix(in oklch, var(--brand-white) 12%, var(--brand-black));
+    --muted: color-mix(in oklch, var(--brand-white) 20%, var(--brand-black));
     --muted-foreground: color-mix(in oklch, var(--brand-white) 55%, transparent);
 
     --accent: var(--brand-pink);
@@ -99,7 +99,7 @@
     --chart-4: var(--brand-white);
     --chart-5: var(--brand-beige);
 
-    --sidebar: color-mix(in oklch, var(--brand-white) 8%, var(--brand-black));
+    --sidebar: color-mix(in oklch, var(--brand-white) 22%, var(--brand-black));
     --sidebar-foreground: var(--brand-white);
     --sidebar-primary: var(--brand-white);
     --sidebar-primary-foreground: var(--brand-black);
