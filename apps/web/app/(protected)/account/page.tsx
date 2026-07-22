@@ -1,5 +1,3 @@
-import { redirect } from "next/navigation"
-
 import {
   Card,
   CardContent,
@@ -10,7 +8,7 @@ import {
 import { Separator } from "@workspace/ui/components/separator"
 
 import type { AuthSession } from "@/lib/auth"
-import { getCachedSession } from "@/lib/session"
+import { requireSession } from "@/lib/session"
 
 export const dynamic = "force-dynamic"
 
@@ -37,11 +35,7 @@ function DetailRow({
 }
 
 export default async function AccountPage() {
-  const session = await getCachedSession()
-
-  if (!session) {
-    redirect("/sign-in?callbackURL=/account")
-  }
+  const session = await requireSession("/account")
 
   return (
     <div className="flex flex-col gap-8 p-6 md:p-8">
@@ -50,7 +44,7 @@ export default async function AccountPage() {
         <p className="mt-2 max-w-2xl text-muted-foreground">
           Protected route validated locally with{" "}
           <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">
-            getCachedSession()
+            requireSession()
           </code>{" "}
           against this app&apos;s Better Auth database. The proxy performs only
           the fast cookie-presence redirect; this page performs the secure

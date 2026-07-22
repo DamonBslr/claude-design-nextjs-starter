@@ -4,6 +4,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import {
   BarChart3,
+  Building2,
   Circle,
   LayoutDashboard,
   Palette,
@@ -43,12 +44,19 @@ const themeOptions = [
 const componentLinks = [
   { title: "Overview", href: "/", icon: LayoutDashboard },
   { title: "Account", href: "/account", icon: User },
+  { title: "Organization", href: "/organization", icon: Building2 },
   { title: "Charts", href: "/#charts", icon: BarChart3 },
   { title: "Forms", href: "/#forms", icon: Settings2 },
   { title: "Feedback", href: "/#feedback", icon: Shapes },
 ] as const
 
-export function AppSidebar({ children }: { children?: React.ReactNode }) {
+export function AppSidebar({
+  children,
+  organizationSwitcher,
+}: {
+  children?: React.ReactNode
+  organizationSwitcher?: React.ReactNode
+}) {
   const pathname = usePathname()
 
   return (
@@ -71,6 +79,7 @@ export function AppSidebar({ children }: { children?: React.ReactNode }) {
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
+        {organizationSwitcher}
         <form className="px-0 group-data-[collapsible=icon]:hidden">
           <SidebarInput placeholder="Search components..." />
         </form>

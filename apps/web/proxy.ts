@@ -2,19 +2,21 @@ import { getSessionCookie } from "better-auth/cookies"
 import type { NextRequest } from "next/server"
 import { NextResponse } from "next/server"
 
-import { AUTH_COOKIE_PREFIX } from "@/lib/auth-config"
+import { AUTH_CALLBACK_HEADER, AUTH_COOKIE_PREFIX } from "@/lib/auth-config"
 
 export function proxy(request: NextRequest) {
+  const callbackURL = `${request.nextUrl.pathname}${request.nextUrl.search}`
+
   if (!getSessionCookie(request, { cookiePrefix: AUTH_COOKIE_PREFIX })) {
     const signInUrl = new URL("/sign-in", request.url)
-    signInUrl.searchParams.set(
-      "callbackURL",
-      `${request.nextUrl.pathname}${request.nextUrl.search}`
-    )
+    signInUrl.searchParams.set("callbackURL", callbackURL)
     return NextResponse.redirect(signInUrl)
   }
 
-  return NextResponse.next()
+  const requestHeaders = new Headers(request.headers)
+  requestHeaders.set(AUTH_CALLBACK_HEADER, callbackURL)
+
+  return NextResponse.next({ request: { headers: requestHeaders } })
 }
 
 export const config = {
