@@ -91,15 +91,12 @@ Design-owned screens live in `packages/ui/src/screens/`. App Router files in
 temporary typed TODO adapters live in `apps/web/lib/features/`. Design sync never
 implements persistence, edits migrations, changes auth policy, or writes secrets.
 
-## Sezaba CI styling (enforced)
+## Styling
 
-All UI uses a **fixed 6-color palette** with no exceptions. This is a hard rule, not a preference. Theme source: [packages/ui/src/styles/globals.css](packages/ui/src/styles/globals.css). Full docs: [STYLEGUIDE.md](STYLEGUIDE.md), enforced via [.cursor/rules/brand-styling.mdc](.cursor/rules/brand-styling.mdc).
+Theme tokens live in [packages/ui/src/styles/globals.css](packages/ui/src/styles/globals.css) — light in `:root`, dark in `.dark`, mapped to Tailwind utilities via `@theme inline`. Ships with the neutral shadcn default palette; swap the token values there to rebrand.
 
-Palette: `brand-black`, `brand-white`, `brand-beige`, `brand-pink`, `brand-red` (**default accent — CTAs, charts, destructive**), `brand-blue` (secondary accent). Dark mode inverts black↔white via CSS variables; accents stay constant.
-
-- **Prefer semantic tokens** (`bg-background`, `text-foreground`, `bg-primary`, `bg-secondary`, `bg-muted`, `bg-accent`, `bg-destructive`) over raw brand utilities, so components stay theme-aware.
-- Charts: `--chart-1` (red) through `--chart-5` (beige); use red first.
-- **Forbidden:** raw hex in TSX/CSS, Tailwind default palettes (`blue-500`, `zinc-200`, `gray-*`), any new color, or blue as the default button/link color. For UI chrome use opacity on brand/semantic tokens (`bg-primary/80`, `border-border`, `text-muted-foreground`) — never invent new grays.
+- **Prefer semantic tokens** (`bg-background`, `text-foreground`, `bg-primary`, `bg-secondary`, `bg-muted`, `bg-accent`, `bg-destructive`, `border-border`) over raw color utilities so components stay theme-aware in light and dark.
+- Charts use `--chart-1` through `--chart-5`.
 
 ## Conventions
 
