@@ -1,8 +1,11 @@
 # Claude Design to Next.js starter
 
-A Bun/Turborepo starter for importing a Claude Design handoff, transforming it
-into a Next.js 16 App Router app, syncing later design versions, and wiring the
-approved backend through Neon/Drizzle and Better Auth.
+An unbranded Bun/Turborepo starter for importing a Claude Design handoff,
+transforming it into a Next.js 16 App Router app, syncing later design
+versions, and wiring the approved backend through Neon/Drizzle and Better Auth.
+
+It ships the stock shadcn/ui theme and no brand of its own — no house palette,
+no display typeface, no styling rules to unpick before you start.
 
 ## Stack
 
@@ -28,6 +31,25 @@ bun run db:migrate
 ```
 
 See `packages/db/README.md` for database details.
+
+## Making it yours
+
+| What | Where |
+| --- | --- |
+| App name (metadata, auth, sidebar, emails) | `APP_NAME` in `apps/web/lib/app-config.ts` |
+| Colors, radius, light/dark tokens | `packages/ui/src/styles/globals.css` |
+| Fonts | `next/font` declarations in `apps/web/app/layout.tsx` |
+| Demo dashboard | `apps/web/components/component-showcase/` |
+| Favicon | `apps/web/app/favicon.ico` |
+
+Nothing else hardcodes a product name, a color, or a typeface. Components use
+semantic tokens (`bg-background`, `text-foreground`, `bg-primary`, …), so a
+palette swap in `globals.css` retints the whole app in both themes.
+
+The theme is the stock shadcn `neutral` base color, and the primitives in
+`packages/ui/src/components/` were generated with shadcn's `radix-nova` style.
+Leave `"style"` in `components.json` alone so anything you add later matches
+what is already installed.
 
 ## Claude Design workflow
 

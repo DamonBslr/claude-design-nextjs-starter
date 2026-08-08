@@ -8,6 +8,7 @@ import { betterAuth } from "better-auth/minimal"
 import { nextCookies } from "better-auth/next-js"
 import { organization } from "better-auth/plugins"
 
+import { APP_NAME } from "@/lib/app-config"
 import {
   AUTH_COOKIE_PREFIX,
   DISABLED_ORGANIZATION_AUTH_PATHS,
@@ -31,7 +32,7 @@ export const auth = betterAuth({
   advanced: {
     cookiePrefix: AUTH_COOKIE_PREFIX,
   },
-  appName: "Planwise",
+  appName: APP_NAME,
   baseURL: process.env.BETTER_AUTH_URL ?? "http://localhost:3000",
   database: drizzleAdapter(db, {
     provider: "pg",

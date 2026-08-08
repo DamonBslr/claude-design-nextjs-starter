@@ -7,7 +7,7 @@ import {
   type ChartConfig,
 } from "@workspace/ui/components/chart"
 
-const contributionData = [
+const activityData = [
   { month: "Dec", activity: 186 },
   { month: "Jan", activity: 305 },
   { month: "Feb", activity: 237 },
@@ -23,14 +23,10 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-function ContributionBarChart({
-  className,
-}: {
-  className?: string
-}) {
+function ActivityBarChart({ className }: { className?: string }) {
   return (
     <ChartContainer config={chartConfig} className={className}>
-      <BarChart accessibilityLayer data={contributionData}>
+      <BarChart accessibilityLayer data={activityData}>
         <CartesianGrid vertical={false} />
         <XAxis
           dataKey="month"
@@ -48,4 +44,4 @@ function ContributionBarChart({
   )
 }
 
-export { ContributionBarChart }
+export { ActivityBarChart }

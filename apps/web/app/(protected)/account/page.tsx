@@ -40,7 +40,7 @@ export default async function AccountPage() {
   return (
     <div className="flex flex-col gap-8 p-6 md:p-8">
       <div>
-        <h1 className="font-heading text-3xl tracking-tight">Account</h1>
+        <h1 className="text-3xl font-medium tracking-tight">Account</h1>
         <p className="mt-2 max-w-2xl text-muted-foreground">
           Protected route validated locally with{" "}
           <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">

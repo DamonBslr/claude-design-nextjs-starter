@@ -93,10 +93,25 @@ implements persistence, edits migrations, changes auth policy, or writes secrets
 
 ## Styling
 
-Theme tokens live in [packages/ui/src/styles/globals.css](packages/ui/src/styles/globals.css) — light in `:root`, dark in `.dark`, mapped to Tailwind utilities via `@theme inline`. Ships with the neutral shadcn default palette; swap the token values there to rebrand.
+This is an unbranded starter. It ships the **stock shadcn/ui theme** (`neutral`
+base color) and nothing else — no brand palette, no display typeface, no
+house styling rules. Rebranding happens in two places and only two places.
+
+Theme tokens live in [packages/ui/src/styles/globals.css](packages/ui/src/styles/globals.css) — light in `:root`, dark in `.dark`, mapped to Tailwind utilities via `@theme inline`. Swap the token values there to rebrand.
 
 - **Prefer semantic tokens** (`bg-background`, `text-foreground`, `bg-primary`, `bg-secondary`, `bg-muted`, `bg-accent`, `bg-destructive`, `border-border`) over raw color utilities so components stay theme-aware in light and dark.
 - Charts use `--chart-1` through `--chart-5`.
+- Fonts are Geist Sans and Geist Mono, loaded with `next/font/google` in
+  [apps/web/app/layout.tsx](apps/web/app/layout.tsx) and exposed as `--font-sans` / `--font-mono`. Use `font-sans` and `font-mono`; there is no
+  separate heading face — headings are the sans face at a larger size and
+  weight.
+- The app's display name is the single `APP_NAME` constant in
+  [apps/web/lib/app-config.ts](apps/web/lib/app-config.ts), used for page metadata, the Better Auth
+  `appName`, sidebar branding, and invitation email copy. Do not hardcode a
+  product name anywhere else.
+- shadcn primitives were generated with the `radix-nova` style (see
+  `components.json`). Keep that value so `bunx shadcn@latest add` stays
+  consistent with the primitives already in `packages/ui`.
 
 ## Conventions
 

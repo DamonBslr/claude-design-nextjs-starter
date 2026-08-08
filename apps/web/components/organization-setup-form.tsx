@@ -49,8 +49,8 @@ export function OrganizationSetupForm({
         <CardHeader>
           <CardTitle>Create your organization</CardTitle>
           <CardDescription>
-            Every Planwise account belongs to an organization. You will be its
-            owner and can invite your team next.
+            Every account belongs to an organization. You will be its owner and
+            can invite your team next.
           </CardDescription>
         </CardHeader>
         <CardContent>

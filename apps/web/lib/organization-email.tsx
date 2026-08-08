@@ -2,6 +2,7 @@ import "server-only"
 
 import { Resend } from "resend"
 
+import { APP_NAME } from "@/lib/app-config"
 import { OrganizationInvitationEmail } from "@/emails/organization-invitation"
 
 export class OrganizationInvitationDeliveryError extends Error {
@@ -39,7 +40,7 @@ export async function sendOrganizationInvitationEmail(data: {
     {
       from,
       to: data.email,
-      subject: `Join ${data.organization.name} in Planwise`,
+      subject: `Join ${data.organization.name} in ${APP_NAME}`,
       react: OrganizationInvitationEmail({
         acceptUrl,
         invitedByEmail: data.inviter.user.email,
