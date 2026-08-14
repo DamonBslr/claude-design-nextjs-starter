@@ -6,14 +6,14 @@ import {
   BarChart3,
   Building2,
   Circle,
+  Command,
   LayoutDashboard,
-  Palette,
   Settings2,
   Shapes,
-  Type,
   User,
 } from "lucide-react"
 
+import { APP_NAME } from "@/lib/app-config"
 import { SidebarUserFooter } from "@/components/sidebar-user-footer"
 
 import {
@@ -28,26 +28,27 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
-  SidebarSeparator,
 } from "@workspace/ui/components/sidebar"
 
-const themeOptions = [
-  { label: "Style", value: "Nova" },
-  { label: "Base color", value: "Neutral" },
-  { label: "Theme", value: "Neutral" },
-  { label: "Chart color", value: "Red" },
-  { label: "Heading font", value: "Instrument Serif" },
-  { label: "Body font", value: "Inter" },
-  { label: "Icon library", value: "Lucide" },
-] as const
-
-const componentLinks = [
+const navLinks = [
   { title: "Overview", href: "/", icon: LayoutDashboard },
   { title: "Account", href: "/account", icon: User },
   { title: "Organization", href: "/organization", icon: Building2 },
   { title: "Charts", href: "/#charts", icon: BarChart3 },
   { title: "Forms", href: "/#forms", icon: Settings2 },
   { title: "Feedback", href: "/#feedback", icon: Shapes },
+] as const
+
+const installedPrimitives = [
+  "Button",
+  "Card",
+  "Badge",
+  "Select",
+  "Slider",
+  "Textarea",
+  "Progress",
+  "Chart",
+  "Sidebar",
 ] as const
 
 export function AppSidebar({
@@ -64,13 +65,13 @@ export function AppSidebar({
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton size="lg" asChild tooltip="Component showcase">
+            <SidebarMenuButton size="lg" asChild tooltip={APP_NAME}>
               <Link href="/">
                 <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                  <Palette className="size-4" />
+                  <Command className="size-4" />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">shadcn/ui</span>
+                  <span className="truncate font-medium">{APP_NAME}</span>
                   <span className="truncate text-xs text-muted-foreground">
                     Monorepo template
                   </span>
@@ -81,34 +82,15 @@ export function AppSidebar({
         </SidebarMenu>
         {organizationSwitcher}
         <form className="px-0 group-data-[collapsible=icon]:hidden">
-          <SidebarInput placeholder="Search components..." />
+          <SidebarInput placeholder="Search…" />
         </form>
       </SidebarHeader>
       <SidebarContent className="overscroll-none">
         <SidebarGroup>
-          <SidebarGroupLabel>Theme (Nova preset)</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {themeOptions.map((option) => (
-                <SidebarMenuItem key={option.label}>
-                  <SidebarMenuButton className="pointer-events-none">
-                    <Type className="opacity-60" />
-                    <span className="flex-1">{option.label}</span>
-                    <span className="text-xs text-muted-foreground">
-                      {option.value}
-                    </span>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-        <SidebarSeparator />
-        <SidebarGroup>
           <SidebarGroupLabel>On this page</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {componentLinks.map((item) => (
+              {navLinks.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton
                     asChild
@@ -133,17 +115,7 @@ export function AppSidebar({
           <SidebarGroupLabel>Primitives installed</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {[
-                "Button",
-                "Card",
-                "Badge",
-                "Select",
-                "Slider",
-                "Textarea",
-                "Progress",
-                "Chart",
-                "Sidebar",
-              ].map((name) => (
+              {installedPrimitives.map((name) => (
                 <SidebarMenuItem key={name}>
                   <SidebarMenuButton className="pointer-events-none text-muted-foreground">
                     <Circle className="size-2 fill-current" />

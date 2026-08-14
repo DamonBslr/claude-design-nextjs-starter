@@ -1,22 +1,23 @@
-import { Geist_Mono, Inter, Instrument_Serif } from "next/font/google"
+import type { Metadata } from "next"
+import { Geist, Geist_Mono } from "next/font/google"
 
 import "@workspace/ui/globals.css"
+import { APP_DESCRIPTION, APP_NAME } from "@/lib/app-config"
 import { ThemeProvider } from "@/components/theme-provider"
 import { TooltipProvider } from "@workspace/ui/components/tooltip"
 import { cn } from "@workspace/ui/lib/utils"
 
-const instrumentSerifHeading = Instrument_Serif({
-  subsets: ["latin"],
-  weight: ["400"],
-  variable: "--font-heading",
-})
+const fontSans = Geist({ subsets: ["latin"], variable: "--font-sans" })
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans" })
+const fontMono = Geist_Mono({ subsets: ["latin"], variable: "--font-mono" })
 
-const fontMono = Geist_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
-})
+export const metadata: Metadata = {
+  title: {
+    default: APP_NAME,
+    template: `%s · ${APP_NAME}`,
+  },
+  description: APP_DESCRIPTION,
+}
 
 export default function RootLayout({
   children,
@@ -29,10 +30,9 @@ export default function RootLayout({
       suppressHydrationWarning
       className={cn(
         "antialiased",
-        fontMono.variable,
         "font-sans",
-        inter.variable,
-        instrumentSerifHeading.variable
+        fontSans.variable,
+        fontMono.variable
       )}
     >
       <body className="overflow-hidden overscroll-none">

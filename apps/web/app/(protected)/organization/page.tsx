@@ -12,7 +12,7 @@ export default async function OrganizationPage() {
         <p className="text-sm font-medium text-muted-foreground capitalize">
           {data.currentRole}
         </p>
-        <h1 className="font-heading text-3xl tracking-tight">
+        <h1 className="text-3xl font-medium tracking-tight">
           {data.activeOrganization.name}
         </h1>
         <p className="mt-2 max-w-2xl text-muted-foreground">

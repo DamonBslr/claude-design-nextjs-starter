@@ -10,6 +10,8 @@ import {
   Text,
 } from "@react-email/components"
 
+import { APP_NAME } from "@/lib/app-config"
+
 export function OrganizationInvitationEmail({
   acceptUrl,
   invitedByEmail,
@@ -24,13 +26,15 @@ export function OrganizationInvitationEmail({
   return (
     <Html>
       <Head />
-      <Preview>Join {organizationName} in Planwise</Preview>
+      <Preview>
+        Join {organizationName} in {APP_NAME}
+      </Preview>
       <Body>
         <Container>
           <Heading>Join {organizationName}</Heading>
           <Text>
             {invitedByName} ({invitedByEmail}) invited you to join their
-            organization in Planwise.
+            organization in {APP_NAME}.
           </Text>
           <Text>
             <Link href={acceptUrl}>Accept the invitation</Link>

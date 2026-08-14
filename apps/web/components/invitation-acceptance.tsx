@@ -53,7 +53,7 @@ export function InvitationAcceptance({
             {pending ? "Joining organization…" : "Invitation status"}
           </CardTitle>
           <CardDescription>
-            Planwise verifies the invitation against your signed-in email.
+            The invitation is verified against your signed-in email.
           </CardDescription>
         </CardHeader>
         <CardContent>

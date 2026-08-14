@@ -1,15 +1,9 @@
 "use client"
 
 import * as React from "react"
-import {
-  Car,
-  Coffee,
-  Music2,
-  Plus,
-  ShoppingBag,
-  Utensils,
-} from "lucide-react"
+import { Bell, FileText, Folder, Plus, Settings, Users } from "lucide-react"
 
+import { ActivityBarChart } from "@/components/component-showcase/activity-bar-chart"
 import { Badge } from "@workspace/ui/components/badge"
 import { Button } from "@workspace/ui/components/button"
 import {
@@ -20,7 +14,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@workspace/ui/components/card"
-import { ContributionBarChart } from "@/components/component-showcase/contribution-bar-chart"
 import { Label } from "@workspace/ui/components/label"
 import { Progress } from "@workspace/ui/components/progress"
 import {
@@ -38,158 +31,136 @@ import {
   ToggleGroupItem,
 } from "@workspace/ui/components/toggle-group"
 
-const transactions = [
-  {
-    title: "Blue Bottle Coffee",
-    category: "Food & Drink",
-    icon: Coffee,
-  },
-  {
-    title: "Uber Trip",
-    category: "Travel",
-    icon: Car,
-  },
-  {
-    title: "Spotify Premium",
-    category: "Entertainment",
-    icon: Music2,
-  },
-  {
-    title: "Whole Foods Market",
-    category: "Groceries",
-    icon: ShoppingBag,
-  },
-  {
-    title: "Sweetgreen",
-    category: "Food & Drink",
-    icon: Utensils,
-  },
+const items = [
+  { title: "Item one", meta: "Category A", icon: FileText },
+  { title: "Item two", meta: "Category B", icon: Folder },
+  { title: "Item three", meta: "Category A", icon: Users },
+  { title: "Item four", meta: "Category C", icon: Bell },
+  { title: "Item five", meta: "Category B", icon: Settings },
 ]
 
 export function ShowcaseDashboard() {
-  const [payoutAmount, setPayoutAmount] = React.useState([2500])
-  const [transactionPage, setTransactionPage] = React.useState("1")
+  const [threshold, setThreshold] = React.useState([2500])
+  const [page, setPage] = React.useState("1")
 
   return (
     <div className="flex-1 bg-muted/30 p-4 md:p-8">
       <div className="mx-auto flex max-w-7xl flex-col gap-4">
         <div className="grid gap-4 md:grid-cols-3">
-          <Card id="charts" className="md:col-span-1 scroll-mt-20">
+          <Card id="charts" className="scroll-mt-20 md:col-span-1">
             <CardHeader>
-              <CardTitle>Contribution History</CardTitle>
-              <CardDescription>Last 6 months of activity</CardDescription>
+              <CardTitle>Activity</CardTitle>
+              <CardDescription>Last 6 months</CardDescription>
             </CardHeader>
             <CardContent>
-              <ContributionBarChart className="aspect-auto h-[180px] w-full" />
+              <ActivityBarChart className="aspect-auto h-[180px] w-full" />
             </CardContent>
             <CardFooter className="flex-col items-stretch gap-4 border-t-0 bg-transparent">
               <div className="grid w-full grid-cols-2 gap-4 text-sm">
                 <div className="space-y-1">
                   <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
-                    Upcoming
+                    Metric one
                   </p>
-                  <p className="font-medium">Jun 12, 2024</p>
-                  <p className="text-muted-foreground">$1,240.00</p>
+                  <p className="font-medium">1,240</p>
+                  <p className="text-muted-foreground">+12% this month</p>
                 </div>
                 <div className="space-y-1">
                   <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
-                    Auto-save plan
+                    Metric two
                   </p>
                   <p className="font-medium">Active</p>
-                  <p className="text-muted-foreground">15% of royalties</p>
+                  <p className="text-muted-foreground">Updated just now</p>
                 </div>
               </div>
-              <Button className="w-full">View Full Report</Button>
+              <Button className="w-full">View report</Button>
             </CardFooter>
           </Card>
 
           <Card id="forms" className="scroll-mt-20">
             <CardHeader>
-              <CardTitle>Payout Threshold</CardTitle>
+              <CardTitle>Form controls</CardTitle>
               <CardDescription>
-                Set your minimum balance for automatic payouts.
+                Select, slider, textarea, and label primitives.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="currency">Preferred Currency</Label>
-                <Select defaultValue="usd">
-                  <SelectTrigger id="currency" className="w-full">
-                    <SelectValue placeholder="Select currency" />
+                <Label htmlFor="option">Option</Label>
+                <Select defaultValue="one">
+                  <SelectTrigger id="option" className="w-full">
+                    <SelectValue placeholder="Select an option" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="usd">
-                      USD — United States Dollar
-                    </SelectItem>
-                    <SelectItem value="eur">EUR — Euro</SelectItem>
-                    <SelectItem value="gbp">GBP — British Pound</SelectItem>
+                    <SelectItem value="one">Option one</SelectItem>
+                    <SelectItem value="two">Option two</SelectItem>
+                    <SelectItem value="three">Option three</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <Label htmlFor="payout-amount">Minimum Payout Amount</Label>
+                  <Label htmlFor="threshold">Threshold</Label>
                   <span className="font-mono text-sm tabular-nums">
-                    ${payoutAmount[0]?.toFixed(2) ?? "0.00"}
+                    {threshold[0] ?? 0}
                   </span>
                 </div>
                 <Slider
-                  id="payout-amount"
+                  id="threshold"
                   min={500}
                   max={10000}
                   step={100}
-                  value={payoutAmount}
-                  onValueChange={setPayoutAmount}
+                  value={threshold}
+                  onValueChange={setThreshold}
                 />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="notes">Notes</Label>
                 <Textarea
                   id="notes"
-                  placeholder="Add any specific instructions for your payout processor..."
+                  placeholder="Add a note…"
                   className="min-h-20 resize-none"
                 />
               </div>
             </CardContent>
             <CardFooter className="border-t-0 bg-transparent pt-0">
-              <Button className="w-full">Save Threshold</Button>
+              <Button className="w-full">Save</Button>
             </CardFooter>
           </Card>
 
           <Card>
             <CardHeader>
-              <CardTitle>Savings Targets</CardTitle>
-              <CardDescription>Active milestones for 2024</CardDescription>
+              <CardTitle>Progress</CardTitle>
+              <CardDescription>Indeterminate placeholder goals</CardDescription>
             </CardHeader>
             <CardContent className="space-y-8">
               <div className="space-y-3">
                 <div className="flex items-baseline justify-between gap-2">
                   <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
-                    Retirement
+                    Goal one
                   </p>
-                  <p className="font-heading text-2xl font-medium tabular-nums">
-                    $45,200
-                  </p>
+                  <p className="text-2xl font-medium tabular-nums">65%</p>
                 </div>
                 <Progress value={65} />
-                <p className="text-xs text-muted-foreground">65% of $70,000</p>
+                <p className="text-xs text-muted-foreground">
+                  650 of 1,000 completed
+                </p>
               </div>
               <div className="space-y-3">
                 <div className="flex items-baseline justify-between gap-2">
                   <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
-                    Real Estate
+                    Goal two
                   </p>
-                  <p className="font-heading text-2xl font-medium tabular-nums">
-                    $12,800
-                  </p>
+                  <p className="text-2xl font-medium tabular-nums">32%</p>
                 </div>
                 <Progress value={32} />
-                <p className="text-xs text-muted-foreground">32% of $40,000</p>
+                <p className="text-xs text-muted-foreground">
+                  320 of 1,000 completed
+                </p>
               </div>
             </CardContent>
             <CardFooter className="border-t-0 bg-transparent">
               <p className="text-xs text-muted-foreground">
-                On track to reach Real Estate goal by November.
+                Replace these cards with your own screens.
               </p>
             </CardFooter>
           </Card>
@@ -200,41 +171,36 @@ export function ShowcaseDashboard() {
                 <Plus className="size-5 text-muted-foreground" />
               </div>
               <div className="space-y-2">
-                <h2 className="font-heading text-xl font-medium">
-                  Distribute Track
-                </h2>
+                <h2 className="text-xl font-medium">Empty state</h2>
                 <p className="max-w-xs text-sm text-muted-foreground">
-                  Upload your latest master to start earning royalties across
-                  all major platforms.
+                  A starting point for the first thing your users create.
                 </p>
               </div>
-              <Button>Create Release</Button>
+              <Button>Create</Button>
             </CardContent>
           </Card>
 
           <Card id="feedback" className="scroll-mt-20">
             <CardHeader>
-              <CardTitle>Claimable Balance</CardTitle>
+              <CardTitle>Status</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-2">
-                <p className="font-heading text-4xl font-medium tabular-nums">
-                  $0.00
-                </p>
+                <p className="text-4xl font-medium tabular-nums">0</p>
                 <Badge variant="secondary" className="gap-1.5">
-                  <span className="size-1.5 rounded-full bg-amber-400" />
-                  Pending Setup
+                  <span className="size-1.5 rounded-full bg-chart-4" />
+                  Pending setup
                 </Badge>
               </div>
               <Separator />
               <dl className="space-y-3 text-sm">
                 <div className="flex justify-between gap-4">
-                  <dt className="text-muted-foreground">Net Royalties</dt>
-                  <dd className="font-medium tabular-nums">$0.00</dd>
+                  <dt className="text-muted-foreground">Total</dt>
+                  <dd className="font-medium tabular-nums">0</dd>
                 </div>
                 <div className="flex justify-between gap-4">
-                  <dt className="text-muted-foreground">Processing Fee</dt>
-                  <dd className="font-medium tabular-nums">-$0.00</dd>
+                  <dt className="text-muted-foreground">Pending</dt>
+                  <dd className="font-medium tabular-nums">0</dd>
                 </div>
               </dl>
             </CardContent>
@@ -243,16 +209,16 @@ export function ShowcaseDashboard() {
           <Card>
             <CardHeader className="flex-row items-start justify-between gap-4 space-y-0">
               <div className="space-y-1">
-                <CardTitle>Recent Transactions</CardTitle>
-                <CardDescription>Your latest activity</CardDescription>
+                <CardTitle>List</CardTitle>
+                <CardDescription>Paginated placeholder rows</CardDescription>
               </div>
               <ToggleGroup
                 type="single"
                 size="sm"
                 variant="outline"
-                value={transactionPage}
+                value={page}
                 onValueChange={(value) => {
-                  if (value) setTransactionPage(value)
+                  if (value) setPage(value)
                 }}
               >
                 <ToggleGroupItem value="1" aria-label="Page 1">
@@ -265,23 +231,20 @@ export function ShowcaseDashboard() {
             </CardHeader>
             <CardContent>
               <ul className="divide-y">
-                {transactions
-                  .slice(
-                    transactionPage === "1" ? 0 : 3,
-                    transactionPage === "1" ? 3 : 5
-                  )
-                  .map((tx) => (
+                {items
+                  .slice(page === "1" ? 0 : 3, page === "1" ? 3 : 5)
+                  .map((item) => (
                     <li
-                      key={tx.title}
+                      key={item.title}
                       className="flex items-center gap-3 py-3 first:pt-0 last:pb-0"
                     >
                       <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-muted">
-                        <tx.icon className="size-4 text-muted-foreground" />
+                        <item.icon className="size-4 text-muted-foreground" />
                       </div>
                       <div className="min-w-0 flex-1">
-                        <p className="truncate font-medium">{tx.title}</p>
+                        <p className="truncate font-medium">{item.title}</p>
                         <p className="text-xs text-muted-foreground">
-                          {tx.category}
+                          {item.meta}
                         </p>
                       </div>
                     </li>
